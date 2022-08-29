@@ -35,22 +35,22 @@ client.connect(err => {
             await client.connect();
             const database = client.db("project-101-doctor");
             const busLocation = database.collection("busone");
-            const users = database.collection("users");
+            const allusers = database.collection("users");
 
             //Get busone
 
             app.get("/busone", async (req, res) => {
-                res.send(await busLocation.find({}).toArray());
+              res.send(await busLocation.find({}).toArray());
             });
 
             //Admin checking
 
             app.get("/users/:email", async (req, res) => {
-                const usr = await users.fineOne({ email: req.params.email });
-                let isAdmin = false;
-                usr?.role === "admin" ? isAdmin = true : isAdmin;
-                res.json({ admin: isAdmin });
-            })
+              const usr = await allusers.findOne({ email: req.params.email });
+              let isAdmin = false;
+              usr?.role === "admin" ? (isAdmin = true) : isAdmin;
+              res.json({ admin: isAdmin });
+            });
 
             //PUT Bus Location
 
